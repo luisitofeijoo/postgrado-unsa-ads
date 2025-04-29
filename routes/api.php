@@ -32,7 +32,7 @@ Route::get('/reniec/{dni}', ReniecServer::class)->name('api.reniec');
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'user']);
-
+    Route::post('user/registro-usuario', [AuthController::class, 'registroUsuario']);
     Route::put('user/ajustes', [AuthController::class, 'ajustes'])->name('user.ajustes');
     Route::put('user/perfil', [AuthController::class, 'updatePerfil'])->name('user.perfil');
 

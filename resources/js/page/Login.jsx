@@ -91,7 +91,7 @@ const Login = () => {
                                         </button>
                                     </div>
                                     <div className="field">
-                                        ¿No tienes una cuenta? <a href="/">Regístrate aquí</a>
+                                        ¿No tienes una cuenta? <a href="/registrar/cuenta">Regístrate aquí</a>
                                     </div>
 
                                     <div className="is-size-7 has-text-right">

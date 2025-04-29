@@ -51,6 +51,9 @@ class AuthController extends Controller
         ]);
     }
 
+    public function registroUsuario(Request $request) {
+        return $request->all();
+    }
     public function ajustes(Request $request) {
 
         $userData = ['username' => $request->input('username')];

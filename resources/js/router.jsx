@@ -29,13 +29,17 @@ import PagePUAReporteXUsuario from "@/page/PagePUAReporteXUsuario";
 import PagePUAAsistenciasEliminados from "@/page/PagePUAAsistenciasEliminados";
 import PageRegistroComidaEdit from "@/page/PageRegistroComidaEdit";
 import PageResumenComidaFecha from "@/page/PageResumenComidaFecha";
+import RegistrarCuenta from "@/page/RegistrarCuenta";
 
 const router = createBrowserRouter([
     {
       path: '/',
         element: <ProtectedLayout><Login/></ProtectedLayout>,
     },
-
+    {
+        path: 'registrar/cuenta',
+        element: <RegistrarCuenta/>,
+    },
     {
         path: '/',
         element: <GuestLayout/>,
