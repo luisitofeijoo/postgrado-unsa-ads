@@ -1,0 +1,190 @@
+@charset "utf-8";
+
+@use 'bulma/css/bulma.min.css';
+@use "variables";
+
+@use "../css/fontawesome-pro/all.css";
+@use "datatables.net-bm";
+@use 'sweetalert2/dist/sweetalert2.min.css';
+
+//Custom Styles css
+@use "./table";
+
+html {
+    font-size: 15px;
+    background-color: #e6eef6;
+}
+
+body {
+    font-family: "Arial", serif;
+    height: 100%;
+}
+
+
+
+.is-bg-mpv{
+    background: #003b8f;
+    color: white;
+    padding: 20px 10px;
+}
+
+/*
+.border-photo-editar-perfil {
+    border-width: 12px;
+    border-style: solid;
+    border-radius: 50%;
+    border-color: #eb5656;
+    overflow: hidden;
+}
+
+.border-photo-editar-perfil:hover {
+    border-color: #fd8585;
+}
+*/
+
+.tabs li.is-active a {
+    border-bottom-color: #1192ee;
+    border-bottom-width: 3px;
+    color: #1192ee;
+
+}
+.tabs {
+    font-size: 14px;
+
+    a {
+        border-bottom-width: 3px;
+        padding-top: 11px;
+        padding-bottom: 11px;
+    }
+}
+
+.Toastify__toast-body {
+    font-size: 14px;
+}
+
+/* Scrollbar Styling */
+.modal-card-body::-webkit-scrollbar {
+    width: 10px;
+}
+
+.modal-card-body::-webkit-scrollbar-track {
+    background-color: #ebebeb;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.modal-card-body::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #a1a1a1;
+}
+
+.profile-picture {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+
+    img {
+        display: block;
+        width: 128px;
+        background-color: black;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    .button-upload-photo {
+        position: absolute;
+        bottom: 10px;
+        right: 5px;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background: rgb(57, 59, 59);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        i {
+            font-size: 20px;
+            color:white;
+        }
+        &:hover {
+            background: rgb(101, 101, 101);
+        }
+    }
+}
+
+.modal-title-card {
+    background: #113868;
+    .modal-card-title {
+        color: #ffffff;
+        font-size: 16px;
+    }
+}
+
+.modal-card-body {
+    background-color: #e6eef6;
+}
+
+.modal-content {
+    width: 80%; /* Ajusta el ancho según tus necesidades */
+    max-width: 1000px; /* Ancho máximo opcional */
+    height: 80%; /* Ajusta la altura según tus necesidades */
+}
+
+
+.lds-ellipsis {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+.lds-ellipsis div {
+    position: absolute;
+    top: 33px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #8b8b94;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+@keyframes lds-ellipsis3 {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0);
+    }
+}
+@keyframes lds-ellipsis2 {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(24px, 0);
+    }
+}
+
