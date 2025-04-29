@@ -56,7 +56,7 @@ const Login = () => {
                                 <p className="has-text-centered">
                                     <img src="/img/empresa/navbar_logo.png"  width="100px" className="mb-4"/>
                                 </p>
-                                <div className="content has-text-centered"><h3 className="has-text-white">Iniciar sesión</h3></div>
+                                <div className="content has-text-centered"><h3 className="has-text-white">Sistema de evaluaciones</h3></div>
                                 <form  className="box" onSubmit={handleSubmit(Auth)}>
                                    {/* <a href={loginUrlGoogle} className="mt-2 button is-fullwidth is-danger">
                                         <span className="icon">
@@ -90,15 +90,14 @@ const Login = () => {
                                             Iniciar sesión
                                         </button>
                                     </div>
+                                    <div className="field">
+                                        ¿No tienes una cuenta? <a href="/">Regístrate aquí</a>
+                                    </div>
 
                                     <div className="is-size-7 has-text-right">
-                                        by
-                                        <a
-                                            href="https://wa.me/+51952417843"
-                                            className="pl-1 has-text-dark"
-                                            target="_blank"
-                                        >Luis Feijoo</a
-                                        >
+                                        De.
+                                         <span>Grupo 3 - ADS Postgrado UNSA</span>
+
                                     </div>
 
                                 </form>
