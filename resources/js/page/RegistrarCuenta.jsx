@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {useForm} from "react-hook-form";
-import {useAuth} from '@/context/AuthContext';
 import axios from "axios";
+import Swal from 'sweetalert2';
+import {toast, ToastContainer} from 'react-toastify';
 const RegistrarCuenta = () => {
     document.title = 'Registro de usuario';
     const {register, setValue, handleSubmit, formState: { errors }, watch} = useForm();
     const navigate = useNavigate();
-    const {setUser} = useAuth();
+
     const [error, setError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const RegistrarCuenta = async (data) => {
@@ -15,9 +16,15 @@ const RegistrarCuenta = () => {
 
         try {
             const response = await axios.post('/api/user/registro-usuario', data);
-
-            alert('registrado');
+            Swal.fire({
+                icon: "success",
+                title: "Su registro se realizó correctamente",
+                // text: "Something went wrong!",
+            }).then((result) => {
+                navigate('/login'); // <<< Reemplaza '/ruta-a-donde-redirigir' con tu URL real
+            });
         } catch  (error) {
+            toast.error("Ocurrio un error en el registro", {position: "bottom-right", theme: "colored"}); // Esto usa react-toastify
 
         } finally {
             setIsSubmitting(false);
@@ -30,6 +37,7 @@ const RegistrarCuenta = () => {
 
     return (
         <>
+            <ToastContainer />
             <section className="hero has-background-black-ter is-fullheight">
                 <div className="hero-body">
                     <div className="container">
@@ -49,13 +57,27 @@ const RegistrarCuenta = () => {
                                     <br/>
                                     <span className="has-text-danger">{error}</span>
                                     <div className="field">
-                                        <label htmlFor="" className="label">Nombres</label>
+                                        <label htmlFor="" className="label">Tipo de usuario</label>
                                         <div className="control">
-                                            <label><input type="radio" name="tipo_usuario" {...register('tipo_usuario') } /> Docente</label>
-                                            <label><input type="radio" name="tipo_usuario" {...register('tipo_usuario') } /> Estudiante</label>
+                                            <label className="mr-4"> {/* Added some margin for spacing */}
+                                                <input
+                                                    type="radio"
+                                                    name="tipo_usuario"
+                                                    value="docente" // Add this value prop
+                                                    {...register('tipo_usuario', {required: true})} // Added required validation
+                                                /> Docente
+                                            </label>
+                                            <label>
+                                                <input
+                                                    type="radio"
+                                                    name="tipo_usuario"
+                                                    value="estudiante" // Add this value prop
+                                                    {...register('tipo_usuario', {required: true})} // Added required validation
+                                                /> Estudiante
+                                            </label>
                                         </div>
-                                        {errors.nombres &&
-                                            <span className="has-text-danger">El campo nombres es requerido.</span>}
+                                        {errors.tipo_usuario &&
+                                            <span className="has-text-danger">El campo Tipo de usuario es requerido.</span>}
                                     </div>
                                     <div className="field">
                                         <label htmlFor="" className="label">Nombres</label>

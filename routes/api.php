@@ -28,14 +28,21 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/reniec/{dni}', ReniecServer::class)->name('api.reniec');
 // Usuario autenticado
 
+Route::post('user/registro-usuario', [AuthController::class, 'registroUsuario']); //No obliga logear
+
+Route::get('/evaluaciones/{id}', [\App\Http\Controllers\EvaluacionController::class, 'getEvaluacion']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'user']);
-    Route::post('user/registro-usuario', [AuthController::class, 'registroUsuario']);
     Route::put('user/ajustes', [AuthController::class, 'ajustes'])->name('user.ajustes');
     Route::put('user/perfil', [AuthController::class, 'updatePerfil'])->name('user.perfil');
 
+    Route::post('curso/store', [\App\Http\Controllers\CursoController::class, 'store'])->name('curso.crear');
+    Route::get('cursos', [\App\Http\Controllers\CursoController::class, 'index'])->name('curso.index');
+
+    Route::post('evaluaciones', [\App\Http\Controllers\EvaluacionController::class, 'store']);
 
     Route::post('persona/crear', [PersonaController::class, 'store'])->name('persona.store');
     Route::get('persona/{id}', [PersonaController::class, 'show'])->name('persona.show');

@@ -30,6 +30,9 @@ import PagePUAAsistenciasEliminados from "@/page/PagePUAAsistenciasEliminados";
 import PageRegistroComidaEdit from "@/page/PageRegistroComidaEdit";
 import PageResumenComidaFecha from "@/page/PageResumenComidaFecha";
 import RegistrarCuenta from "@/page/RegistrarCuenta";
+import PageCrearCurso from "@/page/PageCrearCurso";
+import PageCrearPreguntaRespuesta from "@/page/PageCrearPreguntaRespuesta";
+import PageTomarEvaluacion from "@/page/PageTomarEvaluacion";
 
 const router = createBrowserRouter([
     {
@@ -45,7 +48,7 @@ const router = createBrowserRouter([
         element: <GuestLayout/>,
         children: [
             {
-                path: 'loginss',
+                path: 'login',
                 element: <Login/>,
             },
             {
@@ -64,6 +67,7 @@ const router = createBrowserRouter([
                 path: 'pua/postulantes',
                 element: <PagePUAPotulantes/>
             },
+
             {
                 path: '/pua/registro-asistencia/postulante',
                 element: <PagePUAAsistenciaPostulante/>
@@ -83,7 +87,19 @@ const router = createBrowserRouter([
             {
                 path: '/registro/comida/edit/:fecha/:tipo_comida_id',
                 element: <PageRegistroComidaEdit/>
-            }
+            },
+            {
+                path: 'curso/crear',
+                element: <PageCrearCurso/>
+            },
+            {
+                path: 'evaluacion/crear',
+                element: <PageCrearPreguntaRespuesta/>
+            },
+            {
+                path: 'evaluacion/tomar/:id',
+                element: <PageTomarEvaluacion/>
+            },
         ]
     },
     {

@@ -25,7 +25,8 @@ class PermissionsSeeder extends Seeder
         ];
 
         Role::create(["name" => "admin"]);
-        Role::create(["name" => "editor"]);
+        Role::create(["name" => "docente"]);
+        Role::create(["name" => "estudiante"]);
 
         User::find(1)->assignRole("admin");
 

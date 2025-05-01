@@ -9,10 +9,12 @@ use App\Models\Persona;
 use App\Models\Programacion;
 use App\Models\TipoComida;
 use App\Models\TipoPersona;
+use App\Models\TipoPregunta;
 use App\Models\Ubicacion;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -28,6 +30,8 @@ class DatabaseSeeder extends Seeder
             'username' => 'admin',
             'password' => Hash::make('admin@2025'),
         ]);
+
+
 
         Ubicacion::create(['nombre' => 'TERCER GRADO A']);
         Ubicacion::create(['nombre' => 'TERCER GRADO B']);
@@ -121,7 +125,8 @@ class DatabaseSeeder extends Seeder
             ['nombre' => 'CENA']
         ]);
 
-
-
+        TipoPregunta::create(['nombre_tipo' => 'radio']);
+        TipoPregunta::create(['nombre_tipo' => 'checbok']);
+        TipoPregunta::create(['nombre_tipo' => 'texto']);
     }
 }

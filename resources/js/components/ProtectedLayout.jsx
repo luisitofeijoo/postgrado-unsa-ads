@@ -139,9 +139,9 @@ export default function ProtectedLayout() {
 
                     <div className={`navbar-item has-dropdown ${isActiveDropdownPUA ? 'is-active' : ''}`}
                          ref={dropdownPUARef}>
-                        <a className="navbar-link" onClick={togglePUA}>
-                            Consumos
-                        </a>
+                        {/*<a className="navbar-link" onClick={togglePUA}>*/}
+                        {/*    Consumos*/}
+                        {/*</a>*/}
                         <div className="navbar-dropdown ">
                             {/*<Link className="navbar-item" to="/pua/registro-asistencia/postulante/"
                                   onClick={handleDropdownItemClick}>Registro de comedor</Link>*/}
@@ -164,27 +164,31 @@ export default function ProtectedLayout() {
                         </div>
                     </div>
 
-                    {role("admin") && (<>
-                        <Link className="navbar-item" to="estudiantes">Estudiantes</Link>
+                    {role("admin") && (<> <Link className="navbar-item" to="estudiantes">Administrador</Link></>)}
+                    {role("docente") && (<> <Link className="navbar-item" to="estudiantes">Docente</Link></>)}
+                    {role("estudiante") && (<> <Link className="navbar-item" to="estudiantes">Estudiante</Link></>)}
 
-                       {/* <div className={`navbar-item has-dropdown ${isActiveDropdownBien ? 'is-active' : ''}`}
-                             ref={dropdownBienRef}>
-                            <a className="navbar-link" onClick={toggleNavbarBienes}>
-                                Inventario
-                            </a>
-                            <div className="navbar-dropdown ">
-                                <Link className="navbar-item" to="productos"
-                                      onClick={handleDropdownItemClick}>Bienes</Link>
-                                <Link className="navbar-item" to="bienes/registro-salida"
-                                      onClick={handleDropdownItemClick}>Ingreso/Salida de bienes</Link>
-                                <Link className="navbar-item" to="reporte/salida-bienes"
-                                      onClick={handleDropdownItemClick}>Reporte Ingreso/Salida</Link>
-                                 <Link className="navbar-item" to="page/papeleta-salida" onClick={handleDropdownItemClick}>Papeleta de salida</Link>
-                                <Link className="navbar-item" to="/bienes/rpt-ingreso-salida"
-                                      onClick={handleDropdownItemClick}>Historial de movimientos</Link>
-                            </div>
-                        </div>*/}
-                    </>)}
+
+                    <Link className="navbar-item" to="estudiantes">Estudiantes</Link>
+
+                   {/* <div className={`navbar-item has-dropdown ${isActiveDropdownBien ? 'is-active' : ''}`}
+                         ref={dropdownBienRef}>
+                        <a className="navbar-link" onClick={toggleNavbarBienes}>
+                            Inventario
+                        </a>
+                        <div className="navbar-dropdown ">
+                            <Link className="navbar-item" to="productos"
+                                  onClick={handleDropdownItemClick}>Bienes</Link>
+                            <Link className="navbar-item" to="bienes/registro-salida"
+                                  onClick={handleDropdownItemClick}>Ingreso/Salida de bienes</Link>
+                            <Link className="navbar-item" to="reporte/salida-bienes"
+                                  onClick={handleDropdownItemClick}>Reporte Ingreso/Salida</Link>
+                             <Link className="navbar-item" to="page/papeleta-salida" onClick={handleDropdownItemClick}>Papeleta de salida</Link>
+                            <Link className="navbar-item" to="/bienes/rpt-ingreso-salida"
+                                  onClick={handleDropdownItemClick}>Historial de movimientos</Link>
+                        </div>
+                    </div>*/}
+
 
 
                     <div className={`navbar-item has-dropdown ${isActiveDropdown ? 'is-active' : ''}`}

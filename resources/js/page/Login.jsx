@@ -6,6 +6,7 @@ import {useAuth} from '@/context/AuthContext';
 const Login = () => {
     document.title = 'Login';
     const {register, setValue, handleSubmit, formState: { errors }, watch} = useForm();
+
     const navigate = useNavigate();
     const {setUser} = useAuth();
     const [error, setError] = useState(null);
