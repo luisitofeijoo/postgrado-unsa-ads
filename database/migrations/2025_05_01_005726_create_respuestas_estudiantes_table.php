@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('respuestas_estudiantes', function (Blueprint $table) {
             $table->id();
             // Link to the specific instance of a student taking an evaluation
-            $table->foreignId('evaluacion_estudiantes_id')->constrained('evaluaciones_estudiantes')->onDelete('cascade');
+            $table->foreignId('evaluacion_id')->constrained('evaluaciones')->onDelete('cascade');
             $table->foreignId('pregunta_id')->constrained('preguntas')->onDelete('cascade');
             // opcion_respuesta_id is nullable because 'texto' type questions won't have a selected option ID
             $table->foreignId('opcion_respuesta_id')->nullable()->constrained('opciones_respuesta')->onDelete('set null');
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->timestamps(); // For tracking creation/update of this record
 
             // Add a unique constraint to ensure a student answers a specific question only once per evaluation attempt
-            $table->unique(['evaluacion_estudiantes_id', 'pregunta_id'], 'respuesta_unica_por_pregunta_intento');
+            //$table->unique(['evaluacion_id', 'pregunta_id'], 'respuesta_unica_por_pregunta_intento');
         });
     }
 

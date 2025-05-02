@@ -30,8 +30,8 @@ Route::get('/reniec/{dni}', ReniecServer::class)->name('api.reniec');
 
 Route::post('user/registro-usuario', [AuthController::class, 'registroUsuario']); //No obliga logear
 
-Route::get('/evaluaciones/{id}', [\App\Http\Controllers\EvaluacionController::class, 'getEvaluacion']);
-
+Route::get('/evaluaciones-estudiantes/{id}/evaluation', [\App\Http\Controllers\EvaluacionController::class, 'getEvaluacion']);
+Route::post('/evaluaciones-estudiantes/{id}/submit-answers', [\App\Http\Controllers\EvaluacionController::class, 'saveAnswers']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -42,7 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('curso/store', [\App\Http\Controllers\CursoController::class, 'store'])->name('curso.crear');
     Route::get('cursos', [\App\Http\Controllers\CursoController::class, 'index'])->name('curso.index');
 
-    Route::post('evaluaciones', [\App\Http\Controllers\EvaluacionController::class, 'store']);
+    Route::post('evaluaciones/{curso_id}', [\App\Http\Controllers\EvaluacionController::class, 'store']);
 
     Route::post('persona/crear', [PersonaController::class, 'store'])->name('persona.store');
     Route::get('persona/{id}', [PersonaController::class, 'show'])->name('persona.show');
@@ -52,19 +52,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('personas/{id}', [PersonaController::class, 'destroy'])->name('persona.destroy');
     Route::get('personas/bienes/{dni}', [PersonaController::class, 'bienes'])->name('api.persona.bienes');
 
-    Route::post('bien/registrar-movimiento', [MovimientoBienController::class, 'api_registro_bien_persona'])->name('registro.movimiento.bien');
-    Route::post('bienes/registrar-movimiento/', [MovimientoBienController::class, 'api_registro_bienes_persona'])->name('registro.movimiento.bienes');
-    Route::get('bien/movimientos', [MovimientoBienController::class, 'api_movimientos'])->name('bien.movimientos');
 
-    Route::delete('movimiento/eliminar/{id}', [MovimientoBienController::class, 'delete'])->name('api.movimiento.eliminar');
-    Route::get('movimientos/registros', [MovimientoBienController::class, 'mostrar_registros'])->name('api.movimiento.mostrar_registros');
-    Route::post('movimientos/update', [MovimientoBienController::class, 'actualizar_registro'])->name('api.movimiento.actualizar_registro');
-
-    Route::get('/asistencia/guardar/{dni}', [\App\Http\Controllers\AsistenciaController::class, 'save']);
-    Route::post('/asistencia/eliminar/{id}', [\App\Http\Controllers\AsistenciaController::class, 'eliminar']);
     Route::get('postulantes', [\App\Http\Controllers\PostulanteController::class, 'index'])->name('postulantes.index');
-    Route::get('/reporte/postulantes/user', [\App\Http\Controllers\AsistenciaController::class, 'reporte_postulanteX'])
-        ->name('api.asistencia.postulantes.user');
-    Route::get('/asistencias/eliminados', [\App\Http\Controllers\AsistenciaController::class, 'reporte_asistencias_deletes'])
-        ->name('pua.asistencias.eliminadas');
+
 });

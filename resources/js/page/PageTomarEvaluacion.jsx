@@ -1,20 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // useNavigate for redirection
+// Removed unused imports like Navigate, Outlet, NavLink
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from "axios";
 import { toast, ToastContainer } from 'react-toastify';
 import Swal from 'sweetalert2';
 import 'react-toastify/dist/ReactToastify.css';
-import {Navigate, Outlet, NavLink, Link} from 'react-router-dom';
 // Make sure Bulma CSS is imported in your project entry file
+
 
 export default function PageTomarEvaluacion() {
     document.title = 'Tomar evaluación';
 
-    const evaluacionEstudianteId  = 1; // Get the ID from URL
-    const navigate = useNavigate(); // Hook for redirection
+    // Correctly get evaluacionEstudianteId from URL params
+    const { evaluacionEstudianteId } = useParams(); // <-- Make sure your route is /tomar-examen/:evaluacionEstudianteId
+
+
+
+    const navigate = useNavigate();
 
     const [evaluationAttempt, setEvaluationAttempt] = useState(null); // Holds the evaluaciones_estudiantes record
-    const [evaluation, setEvaluation] = useState(null); // Holds the nested evaluation data (questions, options)
+    const [evaluation, setEvaluation] = useState(null); // Holds the basic evaluation template data
+    const [questions, setQuestions] = useState([]); // State specifically for the questions list
     const [studentAnswers, setStudentAnswers] = useState({}); // State to store student's answers
     const [timeRemaining, setTimeRemaining] = useState(0); // Time in seconds
     const [isLoading, setIsLoading] = useState(true);
@@ -29,21 +35,24 @@ export default function PageTomarEvaluacion() {
             setIsLoading(true);
             setError(null);
             try {
-                // Backend endpoint to get evaluation details for a specific student attempt
-                const response = await axios.get(`/api/evaluaciones/${evaluacionEstudianteId}`);
+
+                const response = await axios.get(`/api/evaluaciones-estudiantes/${evaluacionEstudianteId}/evaluation`);
                 const data = response.data;
 
-                setEvaluationAttempt(data.evaluationAttempt); // Save the attempt record if needed
-                setEvaluation(data.evaluation); // Save the nested evaluation data
+                setEvaluationAttempt(data.evaluationAttempt); // Save the attempt record
+                setEvaluation(data.evaluation); // Save the basic evaluation template data
+                setQuestions(data.evaluationAttempt.preguntas); // <-- **CORRECTION HERE** Save the questions nested in evaluationAttempt
+
 
                 // Initialize time remaining (assuming time is in minutes from backend)
-                // Use the time remaining from the attempt record if available, otherwise use evaluation time
+                // Use the time remaining from the attempt record if available, otherwise use evaluation template time
                 const initialTime = data.evaluationAttempt?.time_remaining ?? (data.evaluation.tiempo * 60);
                 setTimeRemaining(initialTime);
 
                 // Initialize student answers state structure based on questions
                 const initialAnswers = {};
-                data.evaluation.preguntas.forEach(question => {
+                // Iterate over the questions array obtained from the backend response
+                data.evaluationAttempt.preguntas.forEach(question => { // <-- **CORRECTION HERE**
                     if (question.tipo_pregunta.nombre_tipo === 'checkbox') {
                         initialAnswers[question.id] = []; // Checkbox uses an array of selected option IDs
                     } else {
@@ -58,16 +67,17 @@ export default function PageTomarEvaluacion() {
 
             } catch (err) {
                 console.error("Error fetching evaluation:", err.response || err);
-                setError("No se pudo cargar la evaluación. Inténtalo de nuevo.");
+                const errorMessage = err.response?.data?.message || "No se pudo cargar la evaluación. Inténtalo de nuevo.";
+                setError(errorMessage);
                 setIsLoading(false);
-                toast.error("Error al cargar la evaluación.");
+                toast.error(errorMessage);
             }
         };
 
         if (evaluacionEstudianteId) {
             fetchEvaluationData();
         } else {
-            setError("ID de evaluación de estudiante no proporcionado.");
+            setError("ID de intento de evaluación no proporcionado en la URL.");
             setIsLoading(false);
         }
 
@@ -83,14 +93,15 @@ export default function PageTomarEvaluacion() {
 
     // Timer Effect
     useEffect(() => {
-        if (timeRemaining > 0 && !isLoading && !error && !isSubmitted) {
+        // Only start timer if time > 0, not loading, no error, and not submitted
+        if (timeRemaining > 0 && !isLoading && !error && !isSubmitted && questions.length > 0) { // Add check for questions loaded
             timerRef.current = setInterval(() => {
                 setTimeRemaining(prevTime => prevTime - 1);
             }, 1000);
 
             // Cleanup function to clear the interval
             return () => clearInterval(timerRef.current);
-        } else if (timeRemaining === 0 && !isLoading && !error && !isSubmitted) {
+        } else if (timeRemaining === 0 && !isLoading && !error && !isSubmitted && questions.length > 0) { // Add check for questions loaded
             // Time's up, auto-submit
             handleSubmitEvaluation(true); // Pass true to indicate auto-submit
         }
@@ -102,7 +113,7 @@ export default function PageTomarEvaluacion() {
             }
         };
 
-    }, [timeRemaining, isLoading, error, isSubmitted]); // Re-run when these dependencies change
+    }, [timeRemaining, isLoading, error, isSubmitted, questions.length]); // Added questions.length to dependencies
 
 
     // Format time for display (MM:SS)
@@ -114,7 +125,7 @@ export default function PageTomarEvaluacion() {
         return `${paddedMinutes}:${paddedSeconds}`;
     };
 
-    // Handle student answer changes
+    // Handle student answer changes (for radio and text)
     const handleAnswerChange = (questionId, answer) => {
         setStudentAnswers(prevAnswers => ({
             ...prevAnswers,
@@ -162,11 +173,12 @@ export default function PageTomarEvaluacion() {
         Object.keys(studentAnswers).forEach(questionIdString => {
             const questionId = parseInt(questionIdString, 10);
             const answer = studentAnswers[questionIdString]; // The answer state for this question
-            const question = evaluation.preguntas.find(q => q.id === questionId);
+            // Find the question object from the 'questions' state array
+            const question = questions.find(q => q.id === questionId); // <-- Use 'questions' state here
 
-            if (!question) return; // Should not happen
+            if (!question) return; // Should not happen if state is consistent
 
-            const type = question.tipo_pregunta.nombre_tipo;
+            const type = question.tipo_pregunta.nombre_tipo; // Access type_pregunta correctly
 
             if (type === 'texto') {
                 // For text, submit one record if text is not empty
@@ -190,31 +202,32 @@ export default function PageTomarEvaluacion() {
                 // For checkbox, submit one record for each selected option
                 if (Array.isArray(answer)) { // answer is an array of selected option IDs
                     answer.forEach(optionId => {
-                        submissionData.respuestas.push({
-                            pregunta_id: questionId,
-                            texto_respuesta: null,
-                            opcion_respuesta_id: parseInt(optionId, 10)
-                        });
+                        // Ensure optionId is not null/undefined before parsing
+                        if (optionId !== null && optionId !== undefined) {
+                            submissionData.respuestas.push({
+                                pregunta_id: questionId,
+                                texto_respuesta: null,
+                                opcion_respuesta_id: parseInt(optionId, 10)
+                            });
+                        }
                     });
                 }
             }
             // Note: If a question of type radio/checkbox has no option selected, it's skipped here.
-            // You might want to submit a record indicating no answer if that's a requirement.
+            // This matches the backend structure for 'respuestas_estudiantes' where only *given* answers are stored.
         });
 
         console.log("Datos de respuesta a enviar:", submissionData); // Log data structure
 
         try {
-            // Backend endpoint to submit answers for a specific student attempt
             const response = await axios.post(`/api/evaluaciones-estudiantes/${evaluacionEstudianteId}/submit-answers`, submissionData);
 
             Swal.fire(
                 '¡Evaluación Finalizada!',
-                isAutoSubmit ? 'El tiempo se agotó. Tus respuestas han sido guardadas.' : 'Tus respuestas han sido enviadas.',
+                isAutoSubmit ? 'El tiempo se agotó. Tus respuestas han sido guardadas.' : '<h1 class="is-size-3">Tu puntaje es: '+response?.data?.totalScore+'</h1> Tus respuestas han sido enviadas.',
                 'success'
             ).then(() => {
-                // Redirect student after submission (e.g., to results page or dashboard)
-                navigate('/dashboard'); // Adjust redirect path as needed
+                navigate('/dashboard');
             });
 
 
@@ -236,7 +249,7 @@ export default function PageTomarEvaluacion() {
                 errorMessage,
                 'error'
             );
-            // Re-start timer if it wasn't an auto-submit that failed
+            // Re-start timer if it wasn't an auto-submit that failed AND time is remaining
             if (!isAutoSubmit && timeRemaining > 0) {
                 timerRef.current = setInterval(() => {
                     setTimeRemaining(prevTime => prevTime - 1);
@@ -244,6 +257,11 @@ export default function PageTomarEvaluacion() {
             }
         }
     };
+
+    // Access evaluation details safely
+    const evaluationTitle = evaluation?.titulo || 'Cargando Título...';
+    const evaluationDescription = evaluation?.descripcion || 'Cargando Descripción...';
+    const evaluationTimeLimit = evaluation?.tiempo; // Store in minutes
 
 
     if (isLoading) {
@@ -274,13 +292,14 @@ export default function PageTomarEvaluacion() {
         );
     }
 
-    if (!evaluation || !evaluationAttempt) {
+    // Check if both evaluation details AND questions are loaded
+    if (!evaluation || !evaluationAttempt || questions.length === 0) {
         return (
             <section className="section">
                 <div className="container">
                     <div className="notification is-warning">
                         <button className="delete"></button>
-                        No se encontró la evaluación o el intento.
+                        No se pudo cargar la evaluación o no contiene preguntas.
                         <br />
                         <Link to="/dashboard">Volver al Dashboard</Link>
                     </div>
@@ -296,8 +315,8 @@ export default function PageTomarEvaluacion() {
             <section className="section">
                 <div className="container">
                     <div className="box mb-5"> {/* Box for evaluation header */}
-                        <h1 className="title">{evaluation.titulo}</h1>
-                        <p className="subtitle is-6">{evaluation.descripcion}</p>
+                        <h1 className="title">{evaluationTitle}</h1> {/* Use variable */}
+                        <p className="subtitle is-6">{evaluationDescription}</p> {/* Use variable */}
                         <hr />
                         <div className="level is-mobile"> {/* Bulma level for alignment */}
                             <div className="level-left">
@@ -315,84 +334,98 @@ export default function PageTomarEvaluacion() {
                         </div>
                     </div>
 
+                    {/* Removed the outer <form> tag. The submit button will trigger the handler directly. */}
+                    {/* This avoids potential issues with browser's default form submission */}
 
-                    <form onSubmit={(e) => { e.preventDefault(); handleSubmitEvaluation(); }}> {/* Prevent default form submission */}
-                        {evaluation.preguntas.map((question, qIndex) => (
-                            <div key={question.id} className="box mb-4"> {/* Box for each question */}
-                                <p className="has-text-weight-bold mb-2">
-                                    {qIndex + 1}. {question.enunciado}
-                                    <span className="tag is-light ml-2">{question.puntaje} puntos</span> {/* Points tag */}
-                                </p>
-                                <div className="content"> {/* Bulma content class for rich text */}
-                                    {/* Render options based on question type */}
-                                    {question.tipo_pregunta.nombre_tipo === 'radio' && (
-                                        <div className="field"> {/* Use a field for radio group */}
-                                            {question.opciones.map(option => (
-                                                <label key={option.id} className="radio">
-                                                    <input
-                                                        type="radio"
-                                                        name={`question_${question.id}`} // Name groups radios for this question
-                                                        value={option.id}
-                                                        checked={studentAnswers[question.id] === option.id}
-                                                        onChange={() => handleAnswerChange(question.id, option.id)}
-                                                        disabled={isSubmitted} // Disable inputs after submission
-                                                    />
-                                                    {option.texto_opcion}
-                                                </label>
-                                            ))}
-                                        </div>
-                                    )}
 
-                                    {question.tipo_preguntas && question.tipo_preguntas.nombre_tipo === 'checkbox' && (
-                                        <div className="field"> {/* Use a field for checkbox group */}
-                                            {question.opciones.map(option => (
-                                                <label key={option.id} className="checkbox">
-                                                    <input
-                                                        type="checkbox"
-                                                        value={option.id}
-                                                        checked={studentAnswers[question.id]?.includes(option.id) || false} // Ensure default is false if array is empty/null
-                                                        onChange={(e) => handleCheckboxChange(question.id, option.id, e.target.checked)}
-                                                        disabled={isSubmitted}
-                                                    />
-                                                    {option.texto_opcion}
-                                                </label>
-                                            ))}
-                                        </div>
-                                    )}
+                    {questions.map((question, qIndex) => ( // <-- Iterate over the 'questions' state
+                        <div key={question.id} className="box mb-4"> {/* Box for each question */}
+                            <p className="has-text-weight-bold mb-2">
+                                {qIndex + 1}. {question.enunciado}
+                                <span className="tag is-light ml-2">{question.puntaje} puntos</span> {/* Points tag */}
+                            </p>
+                            <div className="content"> {/* Bulma content class for rich text */}
+                                {/* Render options based on question type */}
+                                {/* Access tipo_pregunta correctly */}
+                                {question.tipo_pregunta?.nombre_tipo === 'radio' && ( // <-- Safe navigation check (?)
+                                    <div className="field"> {/* Use a field for radio group */}
+                                        {question.opciones?.map(option => ( // <-- Safe navigation check (?)
+                                            <label key={option.id} className="radio">
+                                                <input
+                                                    type="radio"
+                                                    name={`question_${question.id}`} // Name groups radios for this question
+                                                    // value should be the option ID (number)
+                                                    value={option.id}
+                                                    // Check if the stored answer (option ID) matches the current option ID
+                                                    checked={studentAnswers[question.id] === option.id}
+                                                    // Update state with the selected option ID
+                                                    onChange={() => handleAnswerChange(question.id, option.id)}
+                                                    disabled={isSubmitted} // Disable inputs after submission
+                                                />
+                                                {option.texto_opcion}
+                                            </label>
+                                        ))}
+                                    </div>
+                                )}
 
-                                    {question.tipo_pregunta.nombre_tipo === 'texto' && (
-                                        <div className="field">
-                                            <div className="control">
+                                {/* Access tipo_pregunta correctly */}
+                                {question.tipo_pregunta?.nombre_tipo === 'checkbox' && ( // <-- Safe navigation check (?)
+                                    <div className="field"> {/* Use a field for checkbox group */}
+                                        {question.opciones?.map(option => ( // <-- Safe navigation check (?)
+                                            <label key={option.id} className="checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    // value should be the option ID (number)
+                                                    value={option.id}
+                                                    // Check if the option ID is in the array of selected answers for this question
+                                                    checked={Array.isArray(studentAnswers[question.id]) && studentAnswers[question.id].includes(option.id)} // <-- Correct check
+                                                    onChange={(e) => handleCheckboxChange(question.id, option.id, e.target.checked)}
+                                                    disabled={isSubmitted}
+                                                />
+                                                {option.texto_opcion}
+                                            </label>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* Access tipo_pregunta correctly */}
+                                {question.tipo_pregunta?.nombre_tipo === 'texto' && ( // <-- Safe navigation check (?)
+                                    <div className="field">
+                                        <div className="control">
                                                 <textarea
                                                     className="textarea"
                                                     placeholder="Escribe tu respuesta aquí..."
                                                     rows="3"
+                                                    // Value is the string answer stored in state
                                                     value={studentAnswers[question.id] || ''} // Ensure value is not null/undefined for controlled input
+                                                    // Update state with the textarea value
                                                     onChange={(e) => handleAnswerChange(question.id, e.target.value)}
                                                     disabled={isSubmitted}
                                                 ></textarea>
-                                            </div>
                                         </div>
-                                    )}
+                                    </div>
+                                )}
 
-                                    {/* Add other question types here if needed */}
+                                {/* Add other question types here if needed */}
 
-                                </div>
                             </div>
-                        ))}
+                        </div>
+                    ))}
 
-                        {/*<div className="field mt-5">*/}
-                        {/*    <div className="control">*/}
-                        {/*        <button*/}
-                        {/*            type="submit"*/}
-                        {/*            className={`button is-success is-large is-fullwidth ${isSubmitted ? 'is-loading' : ''}`}  is-loading class */}
-                        {/*            disabled={isLoading || isSubmitted || timeRemaining <= 0} // Disable if loading, submitted, or time is zero*/}
-                        {/*        >*/}
-                        {/*            {isSubmitted ? 'Enviando...' : 'Finalizar Evaluación'}*/}
-                        {/*        </button>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-                    </form>
+                    {/* Submit Button - Placed outside the loop and form */}
+                    <div className="field mt-5">
+                        <div className="control">
+                            <button
+                                type="button" // <-- Changed to type="button"
+                                className={`button is-success is-large is-fullwidth ${isSubmitted ? 'is-loading' : ''}`}
+                                onClick={() => handleSubmitEvaluation(false)} // <-- Call handler directly
+                                disabled={isLoading || isSubmitted || timeRemaining <= 0} // Disable if loading, submitted, or time is zero
+                            >
+                                {isSubmitted ? 'Enviando...' : 'Finalizar Evaluación'}
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </section>
         </>

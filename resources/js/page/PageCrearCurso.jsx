@@ -5,9 +5,9 @@ import axios from "axios";
 import {toast, ToastContainer} from 'react-toastify';
 import Swal from 'sweetalert2';
 
-export default function PageCrearCurso () {
+export default function PageCrearCurso() {
     document.title = 'Crear curso';
-    const {register, setValue, handleSubmit, formState: { errors }, watch, reset} = useForm();
+    const {register, setValue, handleSubmit, formState: {errors}, watch, reset} = useForm();
     const [cursos, setCursos] = useState([]);
     const guardarCurso = function (data) {
         const res = axios.post('/api/curso/store', data).then((r) => {
@@ -35,20 +35,28 @@ export default function PageCrearCurso () {
 
     return (
         <>
-            <ToastContainer />
+            <ToastContainer/>
             <div className="container pt-5">
                 <div className="columns is-centered">
-                    <div className="column is-half">
+                    <div className="column">
+
                         <form onSubmit={handleSubmit(guardarCurso)}>
-                            <div className="content">
-                                <h1>Crear curso</h1>
-                                <div>
-                                    Nombre <input type="text" {...register('nombre_curso')}/>
-                                    <button>Crear curso</button>
-                                </div>
+                            <div className="field">
+                                <p className="control">
+                                    Nombre <input type="text" {...register('nombre_curso')} className="input"/>
+                                </p>
+                            </div>
+                            <div className="field">
+                                <p className="control">
+                                    <button className="button is-success">
+                                        Crear curso
+                                    </button>
+                                </p>
                             </div>
                         </form>
-                        <table border="1">
+                        <br/>
+                        <h3><strong>Lista de cursos</strong></h3>
+                        <table className="table is-fullwidth">
                             <thead>
                             <tr>
                                 <th>ID</th>
@@ -60,7 +68,9 @@ export default function PageCrearCurso () {
                                 <tr key={curso.id}>
                                     <td>{curso.id}</td>
                                     <td>{curso.nombre_curso}</td>
-                                    <td><a href="">Crear evaluación</a></td>
+                                    <td>
+                                        <Link to={'/evaluacion/crear/'+curso.id}>Crear evaluación</Link>
+                                    </td>
                                 </tr>
                             ))}
                             </tbody>

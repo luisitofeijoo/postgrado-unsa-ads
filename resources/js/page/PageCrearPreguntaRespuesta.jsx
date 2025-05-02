@@ -11,6 +11,7 @@ const generateUniqueId = () => Date.now() + Math.random();
 
 export default function PageCrearPreguntaRespuesta() {
     document.title = 'Crear evaluación';
+    const {id} = useParams();
 
     const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm();
 
@@ -162,6 +163,7 @@ export default function PageCrearPreguntaRespuesta() {
             }
         });
 
+
         if (!isValid) {
             errors.forEach(error => toast.error(error));
         }
@@ -196,7 +198,8 @@ export default function PageCrearPreguntaRespuesta() {
         console.log("Datos a enviar:", evaluationData);
 
         try {
-            const response = await axios.post('/api/evaluaciones', evaluationData);
+           // const response = await axios.post('/api/evaluaciones', evaluationData);
+            const response = await axios.post(`/api/evaluaciones/${id}`, evaluationData);
 
             Swal.fire(
                 '¡Creada!',
@@ -309,18 +312,18 @@ export default function PageCrearPreguntaRespuesta() {
                                                 <h6 className="title is-6">Pregunta {qIndex + 1}</h6>
                                                 <button
                                                     type="button"
-                                                    className="button is-danger is-small"
+                                                    className="button is-danger"
                                                     onClick={() => handleRemoveQuestion(question.id)}
                                                 >
                                                     Eliminar Pregunta
                                                 </button>
                                             </div>
                                             <div className="field">
-                                                <label htmlFor={`enunciado-${question.id}`} className="label is-small">Enunciado</label>
+                                                <label htmlFor={`enunciado-${question.id}`} className="labell">Enunciado</label>
                                                 <div className="control">
                                                     <input
                                                         type="text"
-                                                        className="input is-small"
+                                                        className="input"
                                                         id={`enunciado-${question.id}`}
                                                         value={question.enunciado}
                                                         onChange={(e) => handleQuestionChange(question.id, 'enunciado', e.target.value)}
@@ -332,9 +335,9 @@ export default function PageCrearPreguntaRespuesta() {
                                             <div className="columns is-multiline">
                                                 <div className="column is-half">
                                                     <div className="field">
-                                                        <label htmlFor={`tipo_pregunta-${question.id}`} className="label is-small">Tipo de Pregunta</label>
+                                                        <label htmlFor={`tipo_pregunta-${question.id}`} className="label">Tipo de Pregunta</label>
                                                         <div className="control">
-                                                            <div className="select is-fullwidth is-small">
+                                                            <div className="select is-fullwidth">
                                                                 <select
                                                                     id={`tipo_pregunta-${question.id}`}
                                                                     value={question.tipo_pregunta_id}
@@ -354,11 +357,11 @@ export default function PageCrearPreguntaRespuesta() {
                                                 </div>
                                                 <div className="column is-half">
                                                     <div className="field">
-                                                        <label htmlFor={`puntaje-${question.id}`} className="label is-small">Puntaje</label>
+                                                        <label htmlFor={`puntaje-${question.id}`} className="label">Puntaje</label>
                                                         <div className="control">
                                                             <input
                                                                 type="number"
-                                                                className="input is-small"
+                                                                className="input"
                                                                 id={`puntaje-${question.id}`}
                                                                 value={question.puntaje}
                                                                 onChange={(e) => handleQuestionChange(question.id, 'puntaje', e.target.value)}
@@ -376,7 +379,7 @@ export default function PageCrearPreguntaRespuesta() {
                                                         <h6 className="title is-6">Opciones de Respuesta</h6>
                                                         <button
                                                             type="button"
-                                                            className="button is-link is-small is-outlined"
+                                                            className="button is-link is-outlined"
                                                             onClick={() => handleAddOption(question.id)}
                                                         >
                                                             Agregar Opción
@@ -409,7 +412,7 @@ export default function PageCrearPreguntaRespuesta() {
                                                                 <p className="control is-expanded">
                                                                     <input
                                                                         type="text"
-                                                                        className="input is-small"
+                                                                        className="input"
                                                                         placeholder={`Opción ${oIndex + 1}`}
                                                                         value={option.texto_opcion}
                                                                         onChange={(e) => handleOptionChange(question.id, option.id, 'texto_opcion', e.target.value)}
@@ -419,7 +422,7 @@ export default function PageCrearPreguntaRespuesta() {
                                                                 <p className="control">
                                                                     <button
                                                                         type="button"
-                                                                        className="button is-danger is-small is-outlined"
+                                                                        className="button is-dangerl is-outlined"
                                                                         onClick={() => handleRemoveOption(question.id, option.id)}
                                                                     >
                                                                         <span>Eliminar</span>
