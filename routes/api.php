@@ -49,4 +49,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('estudiantes', [\App\Http\Controllers\EstudianteController::class, 'index'])->name('estudiante.index');
     Route::get('personas', [PersonaController::class, 'index'])->name('persona.index');
     Route::delete('personas/{id}', [PersonaController::class, 'destroy'])->name('persona.destroy');
+
+    Route::get('docentes/listar', [\App\Http\Controllers\UserController::class, 'listarDocentes']);
 });

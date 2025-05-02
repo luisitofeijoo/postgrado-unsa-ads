@@ -47,6 +47,9 @@ class UserController extends Controller
             ->make(true);
     }
 
+    public function listarDocentes() {
+        return User::role('docente')->select('id', 'nombres', 'apellidos')->get();
+    }
     public function registroUsuario(Request $request) {
         $user =  User::create([
             'nro_documento' => $request->input('nro_documento'),

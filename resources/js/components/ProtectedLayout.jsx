@@ -208,7 +208,7 @@ export default function ProtectedLayout() {
 
                 <section className="main-content columns is-fullheight">
 
-                    <aside className="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
+                    <aside className="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile  vh-100">
                         <p className="menu-label is-hidden-touch">Menú de navegación</p>
                         <ul className="menu-list">
                             {role("admin") && (<>
@@ -216,10 +216,25 @@ export default function ProtectedLayout() {
                                     <Link className="navbar-item" to="usuarios"><span className="icon"><i
                                         className="fa fa-user"></i></span> Usuarios</Link>
                                 </li>
+
+                            <li>
+                                <Link className="navbar-item" to="curso/crear"><span className="icon"><i
+                                    className="fa fa-user"></i></span> Crear curso</Link>
+                            </li>
+
+                            </>)}
+
+
+                            {role("docente") && (<>
+                                <li>
+                                    <Link className="navbar-item" to="docente/cursos"><span className="icon"><i
+                                        className="fa fa-user"></i></span> Cursos</Link>
+                                </li>
                             </>)}
 
 
                             {/*<li>*/}
+
                             {/*    <a href="#" className="is-active">*/}
                             {/*        <span className="icon"><i className="fa fa-table"></i></span> Links*/}
                             {/*    </a>*/}

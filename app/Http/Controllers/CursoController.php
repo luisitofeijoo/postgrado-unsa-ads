@@ -14,6 +14,8 @@ class CursoController extends Controller
     public function store(Request $request){
         $curso = new Curso();
         $curso->nombre_curso = $request->input('nombre_curso');
+        $curso->user_id = $request->input('user_id');
+        $curso->creditos = $request->input('creditos');
         $curso->save();
         return $curso;
     }
