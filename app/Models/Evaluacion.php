@@ -10,6 +10,7 @@ class Evaluacion extends Model
     use HasFactory;
     protected $table = 'evaluaciones'; // Make sure table name is correct
     protected $fillable = [
+        'user_id',
         'curso_id', // You might need to handle curso_id creation/assignment
         'titulo',
         'descripcion',
@@ -17,6 +18,10 @@ class Evaluacion extends Model
         // 'fecha_crecion', 'fecha_actualizacion' are handled by timestamps()
     ];
 
+    public function curso()
+    {
+        return $this->belongsTo(Curso::class);
+    }
     public function preguntas()
     {
         return $this->hasMany(Pregunta::class);

@@ -15,6 +15,8 @@ import RegistrarCuenta from "@/page/RegistrarCuenta";
 import PageCrearCurso from "@/page/PageCrearCurso";
 import PageCrearPreguntaRespuesta from "@/page/PageCrearPreguntaRespuesta";
 import PageTomarEvaluacion from "@/page/PageTomarEvaluacion";
+import PageDocenteCursos from "@/page/PageDocenteCursos";
+import PageEvaluaciones from "@/page/pageEvaluaciones";
 
 const router = createBrowserRouter([
     {
@@ -64,6 +66,14 @@ const router = createBrowserRouter([
             {
                 path: 'admin',
                 element: 'Hola, Bienvenido.',
+            },
+            {
+                path: 'docente/cursos/:user_id',
+                element: <PageDocenteCursos/>,
+            },
+            {
+                path: 'docente/evaluaciones/:user_id',
+                element: <PageEvaluaciones/>,
             },
             {
                 path: 'usuarios',

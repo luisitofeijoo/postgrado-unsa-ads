@@ -51,4 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('personas/{id}', [PersonaController::class, 'destroy'])->name('persona.destroy');
 
     Route::get('docentes/listar', [\App\Http\Controllers\UserController::class, 'listarDocentes']);
+    Route::get('docente/cursos/{user_id}', [\App\Http\Controllers\UserController::class, 'listarCursosUsuario']);
+    Route::get('docente/evaluaciones/{user_id}', [\App\Http\Controllers\UserController::class, 'listarEvaluacionesUsuario']);
+
 });

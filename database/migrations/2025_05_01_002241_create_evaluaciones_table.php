@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             // Assuming curso_id links to a 'cursos' table. Make nullable or adjust if mandatory/different.
             $table->foreignId('curso_id')->nullable()->constrained('cursos')->onDelete('set null');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->string('titulo');
             $table->text('descripcion')->nullable(); // Description can be optional?
             $table->integer('tiempo')->comment('Tiempo limite en minutos');
