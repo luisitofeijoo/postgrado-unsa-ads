@@ -51,17 +51,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function registroUsuario(Request $request) {
-        $user =  User::create([
-            'nombres' => $request->input('nombres'),
-            'apellidos' => $request->input('apellidos'),
-            'email' => $request->input('email'),
-            'username' => explode('@', $request->input('email'))[0],
-            'password' => Hash::make('admin@2025'),
-        ]);
 
-        User::find($user->id)->assignRole($request->input('tipo_usuario'));
-    }
     public function ajustes(Request $request) {
 
         $userData = ['username' => $request->input('username')];

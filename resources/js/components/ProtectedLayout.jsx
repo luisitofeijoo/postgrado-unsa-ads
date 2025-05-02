@@ -164,30 +164,10 @@ export default function ProtectedLayout() {
                         </div>
                     </div>
 
-                    {role("admin") && (<> <Link className="navbar-item" to="estudiantes">Administrador</Link></>)}
-                    {role("docente") && (<> <Link className="navbar-item" to="estudiantes">Docente</Link></>)}
-                    {role("estudiante") && (<> <Link className="navbar-item" to="estudiantes">Estudiante</Link></>)}
 
 
-                    <Link className="navbar-item" to="estudiantes">Estudiantes</Link>
 
-                   {/* <div className={`navbar-item has-dropdown ${isActiveDropdownBien ? 'is-active' : ''}`}
-                         ref={dropdownBienRef}>
-                        <a className="navbar-link" onClick={toggleNavbarBienes}>
-                            Inventario
-                        </a>
-                        <div className="navbar-dropdown ">
-                            <Link className="navbar-item" to="productos"
-                                  onClick={handleDropdownItemClick}>Bienes</Link>
-                            <Link className="navbar-item" to="bienes/registro-salida"
-                                  onClick={handleDropdownItemClick}>Ingreso/Salida de bienes</Link>
-                            <Link className="navbar-item" to="reporte/salida-bienes"
-                                  onClick={handleDropdownItemClick}>Reporte Ingreso/Salida</Link>
-                             <Link className="navbar-item" to="page/papeleta-salida" onClick={handleDropdownItemClick}>Papeleta de salida</Link>
-                            <Link className="navbar-item" to="/bienes/rpt-ingreso-salida"
-                                  onClick={handleDropdownItemClick}>Historial de movimientos</Link>
-                        </div>
-                    </div>*/}
+
 
 
 
@@ -197,7 +177,11 @@ export default function ProtectedLayout() {
                             <figure className="image is-24x24">
                                 <img src={user.avatar} className="is-rounded"/>
                             </figure>
-                            <span className="pl-2">{user.nombres}</span>
+                            <span className="pl-2">{user.nombres}<small className="has-text-weight-bold"> [
+                                {role("admin") && (<> Administrador</>)}
+                                {role("docente") && (<> Docente</>)}
+                                {role("estudiante") && (<> Estudiante</>)} ]</small>
+                            </span>
                         </a>
                         <div className="navbar-dropdown is-right">
                             <Link
@@ -221,7 +205,54 @@ export default function ProtectedLayout() {
         </nav>
         <main>
             <div className="has-background-all vh-100">
-            <Outlet/>
+
+                <section className="main-content columns is-fullheight">
+
+                    <aside className="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
+                        <p className="menu-label is-hidden-touch">Menú de navegación</p>
+                        <ul className="menu-list">
+                            {role("admin") && (<>
+                                <li>
+                                    <Link className="navbar-item" to="usuarios"><span className="icon"><i
+                                        className="fa fa-user"></i></span> Usuarios</Link>
+                                </li>
+                            </>)}
+
+
+                            {/*<li>*/}
+                            {/*    <a href="#" className="is-active">*/}
+                            {/*        <span className="icon"><i className="fa fa-table"></i></span> Links*/}
+                            {/*    </a>*/}
+
+                            {/*    <ul>*/}
+                            {/*        <li>*/}
+                            {/*            <a href="#">*/}
+                            {/*                <span className="icon is-small"><i className="fa fa-link"></i></span> Link1*/}
+                            {/*            </a>*/}
+                            {/*        </li>*/}
+                            {/*        <li>*/}
+                            {/*            <a href="#">*/}
+                            {/*                <span className="icon is-small"><i className="fa fa-link"></i></span> Link2*/}
+                            {/*            </a>*/}
+                            {/*        </li>*/}
+                            {/*    </ul>*/}
+                            {/*</li>*/}
+                            {/*<li>*/}
+                            {/*    <a href="#" className="">*/}
+                            {/*        <span className="icon"><i className="fa fa-info"></i></span> About*/}
+                            {/*    </a>*/}
+                            {/*</li>*/}
+                        </ul>
+                    </aside>
+
+                    <div className="container column is-10">
+                        <div className="section">
+                            <Outlet/>
+                        </div>
+                    </div>
+
+                </section>
+
             </div>
         </main>
         <ToastContainer/>

@@ -10,7 +10,7 @@ import PageEditarPersona from "./page/PageEditarPersona";
 import GoogleCallback from "@/components/GoogleCallback";
 import TabsPersona from "@/components/TabsPersona";
 
-import PageEstudiantes from "@/page/PageEstudiantes";
+import PageUsuarios from "@/page/PageUsuarios";
 import RegistrarCuenta from "@/page/RegistrarCuenta";
 import PageCrearCurso from "@/page/PageCrearCurso";
 import PageCrearPreguntaRespuesta from "@/page/PageCrearPreguntaRespuesta";
@@ -62,8 +62,12 @@ const router = createBrowserRouter([
         element: <ProtectedLayout/>,
         children: [
             {
-                path: 'estudiantes',
-                element: <PageEstudiantes/>,
+                path: 'admin',
+                element: 'Hola, Bienvenido.',
+            },
+            {
+                path: 'usuarios',
+                element: <PageUsuarios/>,
             },
             {
                 path: 'personas',

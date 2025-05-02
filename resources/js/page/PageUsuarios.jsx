@@ -7,7 +7,7 @@ import {toast} from "react-toastify";
 import RegistrarActualizarPersona from "@/page/RegistrarActualizarPersona";
 import {role} from "@/utils/utils";
 
-export default function PageEstudiantes() {
+export default function PageUsuarios() {
     const tableRef = useRef(null);
     const navigate = useNavigate();
     const [openModalPersona, setOpenModalPersona] = useState(false);
@@ -28,7 +28,7 @@ export default function PageEstudiantes() {
             },
             processing: true,
             serverSide: true,
-            ajax: route('estudiante.index'),
+            ajax: route('user.index'),
             error: function (xhr, error, thrown) {
                 // Manejo de errores aquí
                 console.error('Error en la solicitud AJAX:', error);
@@ -50,12 +50,10 @@ export default function PageEstudiantes() {
                     searchable: false
                 },
                 {data: 'nro_documento', name: 'nro_documento'},
-                {data: 'apellido_paterno', name: 'apellido_paterno'},
-                {data: 'apellido_materno', name: 'apellido_materno'},
                 {data: 'nombres', name: 'nombres'},
-                {data: 'grado', name: 'grado'},
-                {data: 'seccion', name: 'seccion'},
-                {data: 'ano_ingreso', name: 'ano_ingreso'},
+                {data: 'apellidos', name: 'apellidos'},
+                {data: 'email', name: 'email'},
+                {data: 'role', name: 'role'},
                 {
                     data: 'action',
                     name: 'action',
@@ -154,7 +152,7 @@ export default function PageEstudiantes() {
             <div className="container">
                 <div className="columns content pt-3" style={{borderBottom: "1px solid #c6d4e1"}}>
                     <div className="column">
-                        <h3 className="has-text-weight-bold mb-0">Personas</h3>
+                        <h3 className="has-text-weight-bold mb-0">Usuarios</h3>
                     </div>
                     <div className="column has-text-right is-inline-block">
                         <div className="field">
@@ -165,9 +163,9 @@ export default function PageEstudiantes() {
                         {/*    <button className="button is-primary ml-2">
                                 <i className="fa fa-file-excel pr-1"></i>Excel
                             </button>*/}
-                            <button className="button is-link ml-2" onClick={() => setModalRegistroPersona(true)}>
-                                <i className="fa fa-add pr-1"></i>Nueva persona
-                            </button>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -181,12 +179,10 @@ export default function PageEstudiantes() {
                         <th></th>
                         <th>#</th>
                         <th>Dni</th>
-                        <th>A. paterno</th>
-                        <th>A. materno</th>
                         <th>Nombres</th>
-                        <th>Grado</th>
-                        <th>Seccion</th>
-                        <th>Año de ingreso</th>
+                        <th>Apellidos</th>
+                        <th>Email</th>
+                        <th>Tipo de usuario</th>
                         <th>Acciones</th>
                     </tr>
                     </thead>

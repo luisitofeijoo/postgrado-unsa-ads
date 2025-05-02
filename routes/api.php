@@ -28,21 +28,20 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/reniec/{dni}', ReniecServer::class)->name('api.reniec');
 // Usuario autenticado
 
-Route::post('user/registro-usuario', [AuthController::class, 'registroUsuario']); //No obliga logear
-
-Route::get('/evaluaciones-estudiantes/{id}/evaluation', [\App\Http\Controllers\EvaluacionController::class, 'getEvaluacion']);
-Route::post('/evaluaciones-estudiantes/{id}/submit-answers', [\App\Http\Controllers\EvaluacionController::class, 'saveAnswers']);
+Route::post('user/registro-usuario', [\App\Http\Controllers\UserController::class, 'registroUsuario']); //No obliga logear
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'user']);
     Route::put('user/ajustes', [AuthController::class, 'ajustes'])->name('user.ajustes');
     Route::put('user/perfil', [AuthController::class, 'updatePerfil'])->name('user.perfil');
-
+    Route::get('user/listar', [\App\Http\Controllers\UserController::class, 'index'])->name('user.index');
     Route::post('curso/store', [\App\Http\Controllers\CursoController::class, 'store'])->name('curso.crear');
     Route::get('cursos', [\App\Http\Controllers\CursoController::class, 'index'])->name('curso.index');
 
     Route::post('evaluaciones/{curso_id}', [\App\Http\Controllers\EvaluacionController::class, 'store']);
+    Route::get('/evaluaciones-estudiantes/{id}/evaluation', [\App\Http\Controllers\EvaluacionController::class, 'getEvaluacion']);
+    Route::post('/evaluaciones-estudiantes/{id}/submit-answers', [\App\Http\Controllers\EvaluacionController::class, 'saveAnswers']);
 
     Route::post('persona/crear', [PersonaController::class, 'store'])->name('persona.store');
     Route::get('persona/{id}', [PersonaController::class, 'show'])->name('persona.show');
@@ -50,9 +49,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('estudiantes', [\App\Http\Controllers\EstudianteController::class, 'index'])->name('estudiante.index');
     Route::get('personas', [PersonaController::class, 'index'])->name('persona.index');
     Route::delete('personas/{id}', [PersonaController::class, 'destroy'])->name('persona.destroy');
-    Route::get('personas/bienes/{dni}', [PersonaController::class, 'bienes'])->name('api.persona.bienes');
-
-
-    Route::get('postulantes', [\App\Http\Controllers\PostulanteController::class, 'index'])->name('postulantes.index');
-
 });

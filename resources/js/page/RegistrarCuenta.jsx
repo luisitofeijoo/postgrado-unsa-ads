@@ -77,7 +77,8 @@ const RegistrarCuenta = () => {
                                             </label>
                                         </div>
                                         {errors.tipo_usuario &&
-                                            <span className="has-text-danger">El campo Tipo de usuario es requerido.</span>}
+                                            <span
+                                                className="has-text-danger">El campo Tipo de usuario es requerido.</span>}
                                     </div>
                                     <div className="field">
                                         <label htmlFor="" className="label">Nombres</label>
@@ -103,7 +104,7 @@ const RegistrarCuenta = () => {
                                         <label htmlFor="" className="label">Dni</label>
                                         <div className="control">
                                             <input type="text"
-                                                   className="input" {...register('dni', {required: true})}
+                                                   className="input" {...register('nro_documento', {required: true})}
                                                    placeholder="" autoFocus={true}/>
                                         </div>
                                         {errors.dni &&
@@ -118,6 +119,16 @@ const RegistrarCuenta = () => {
                                         </div>
                                         {errors.email &&
                                             <span className="has-text-danger">El campo email es requerido.</span>}
+                                    </div>
+                                    <div className="field">
+                                        <label htmlFor="" className="label">Contraseña</label>
+                                        <div className="control">
+                                            <input type="password"
+                                                   className="input" {...register('password', {required: true})}
+                                                   placeholder="" autoFocus={true}/>
+                                        </div>
+                                        {errors.password &&
+                                            <span className="has-text-danger">El campo password es requerido.</span>}
                                     </div>
                                     <div className="field has-text-centered">
                                         <button className="button is-link is-fullwidth" disabled={isSubmitting}>
