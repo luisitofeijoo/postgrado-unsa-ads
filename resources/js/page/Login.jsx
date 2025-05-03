@@ -49,7 +49,7 @@ const Login = () => {
 
     return (
         <>
-            <section className="hero has-background-black-ter is-fullheight">
+            <section className="hero is-fullheight" style={{ backgroundImage: "url('./img/bg_login.jpg')" }}>
                 <div className="hero-body">
                     <div className="container">
                         <div className="columns is-centered">

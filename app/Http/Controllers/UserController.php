@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Curso;
+use App\Models\Evaluacion;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -50,6 +52,16 @@ class UserController extends Controller
     public function listarDocentes() {
         return User::role('docente')->select('id', 'nombres', 'apellidos')->get();
     }
+
+    public function listarCursosUsuario(Request $request) {
+        return Curso::where('user_id', $request->user()->id)->get();
+    }
+
+    public function listarEvaluacionesUsuario(Request $request) {
+        return Evaluacion::with('curso')->where('user_id', $request->user()->id)->orderBy('id', 'desc')->get();
+    }
+
+
     public function registroUsuario(Request $request) {
         $user =  User::create([
             'nro_documento' => $request->input('nro_documento'),

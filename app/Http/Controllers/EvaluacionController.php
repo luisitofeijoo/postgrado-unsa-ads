@@ -34,6 +34,7 @@ class EvaluacionController extends Controller
             // Assuming curso_id is nullable or handled elsewhere if not provided in frontend
             $evaluation = Evaluacion::create([
                 'curso_id' => $curso_id, // Adjust if curso_id is mandatory
+                'user_id' => $request->user()->id,
                 'titulo' => $request->titulo,
                 'descripcion' => $request->descripcion,
                 'tiempo' => $request->tiempo,
@@ -59,13 +60,14 @@ class EvaluacionController extends Controller
             }
 
 
-            //  DB::commit();
+              DB::commit();
 
-            // Return a success response
             return response()->json([
                 'message' => 'Evaluación creada con éxito',
                 'evaluation' => $evaluation
             ], 201);
+
+
 
         } catch (\Exception $e) {
 
