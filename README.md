@@ -1,5 +1,14 @@
 # Proyecto Postgrado UNSA ADS
 
+**Grupo 3 - Integrantes:**
+- Carrasco Reynoso Alcira Angela
+- Feijoo Valeriano Luis Miguel
+- Huanca Serruto David Alonso
+- Pacco Huamani Gabriela
+- Pantaleón Ccoa Arturo H.
+- Vilca Quispe Ronal Ever
+- Vizcarra Ylaquita Jenifer Stephanie
+
 Este es un sistema web desarrollado con Laravel y Node.js como parte del proyecto de Postgrado de la Universidad Nacional de San Agustín de Arequipa.
 
 ## Requisitos
