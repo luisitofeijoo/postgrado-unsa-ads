@@ -17,6 +17,7 @@ import PageCrearPreguntaRespuesta from "@/page/PageCrearPreguntaRespuesta";
 import PageTomarEvaluacion from "@/page/PageTomarEvaluacion";
 import PageDocenteCursos from "@/page/PageDocenteCursos";
 import PageEvaluaciones from "@/page/pageEvaluaciones";
+import PageCursoEvaluaciones from "@/page/PageCursoEvaluaciones";
 
 const router = createBrowserRouter([
     {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
             {
                 path: 'curso/crear',
                 element: <PageCrearCurso/>
+            },
+            {
+                path: 'curso/evaluaciones',
+                element: <PageCursoEvaluaciones/>
             },
             {
                 path: 'evaluacion/crear/:id',

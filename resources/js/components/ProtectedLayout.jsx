@@ -238,6 +238,14 @@ export default function ProtectedLayout() {
                                 </li>
                             </>)}
 
+                            {role("estudiante") && (<>
+                                <li>
+                                    <Link className="navbar-item" to={'curso/evaluaciones/'}><span
+                                        className="icon"><i
+                                        className="far fa-page"></i></span> Evaluaciones</Link>
+                                </li>
+                            </>)}
+
 
                             {/*<li>*/}
 

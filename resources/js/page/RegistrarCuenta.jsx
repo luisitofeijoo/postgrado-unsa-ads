@@ -113,7 +113,7 @@ const RegistrarCuenta = () => {
                                     <div className="field">
                                         <label htmlFor="" className="label">Correo electronico</label>
                                         <div className="control">
-                                            <input type="text"
+                                            <input type="email"
                                                    className="input" {...register('email', {required: true})}
                                                    placeholder="" autoFocus={true}/>
                                         </div>
@@ -139,6 +139,10 @@ const RegistrarCuenta = () => {
                                             }
                                             Registrar
                                         </button>
+                                        <div className="mt-2 mb-2">ó</div>
+                                        <Link to={'/login'} className="button is-success is-fullwidth">
+                                            Iniciar sesión
+                                        </Link>
                                     </div>
                                 </form>
 

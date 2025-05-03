@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Curso;
+use App\Models\Evaluacion;
 use Illuminate\Http\Request;
 
 class CursoController extends Controller
@@ -18,5 +19,8 @@ class CursoController extends Controller
         $curso->creditos = $request->input('creditos');
         $curso->save();
         return $curso;
+    }
+    public function evaluaciones() {
+        return Evaluacion::with('curso')->orderBy('id', 'desc')->get();
     }
 }
