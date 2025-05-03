@@ -12,6 +12,7 @@ const Login = () => {
     const [error, setError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [loginUrlGoogle, setLoginUrlGoogle] = useState(null);
+    const [showModal, setShowModal] = useState(false);
     const Auth = async (data) => {
         setIsSubmitting(true);
         try {
@@ -45,6 +46,13 @@ const Login = () => {
             })
             .then((data) => setLoginUrlGoogle( data.url ))
             .catch((error) => console.error(error));
+
+        // Mostrar modal SOLO UNA VEZ
+        const modalShown = localStorage.getItem('modalShown');
+        if (!modalShown) {
+            setShowModal(true);
+            localStorage.setItem('modalShown', 'true');
+        }
     }, []);
 
     return (
@@ -59,12 +67,7 @@ const Login = () => {
                                 </p>
                                 <div className="content has-text-centered"><h3 className="has-text-white">Sistema de evaluaciones</h3></div>
                                 <form  className="box" onSubmit={handleSubmit(Auth)}>
-                                   {/* <a href={loginUrlGoogle} className="mt-2 button is-fullwidth is-danger">
-                                        <span className="icon">
-                                            <i className="fab fa-google"></i>
-                                        </span>
-                                        <span><strong>Inicia sesión con Google</strong></span>
-                                    </a>*/}
+
                                     <br/>
                                     <span className="has-text-danger">{error}</span>
                                     <div className="field">
@@ -108,6 +111,33 @@ const Login = () => {
                     </div>
                 </div>
             </section>
+            {/* MODAL DE SCRUM */}
+            <div className={`modal ${showModal ? 'is-active' : ''}`}>
+                <div className="modal-background"></div>
+                <div className="modal-card">
+                    <header className="modal-card-head">
+                        <p className="modal-card-title">Integrantes del proyecto</p>
+                        <button className="delete" aria-label="close" onClick={() => setShowModal(false)}></button>
+                    </header>
+                    <section className="modal-card-body">
+                        <p><strong>Proyecto Scrum - Grupo 3</strong></p>
+                        <ul>
+
+                            <li>✅Carrasco Reynoso Alcira Angela</li>
+                            <li>✅Feijoo Valeriano Luis Miguel</li>
+                            <li>✅Huanca Serruto David Alonso</li>
+                            <li>✅Pacco Huamani Gabriela</li>
+                            <li>✅Pantaleón Ccoa Arturo H.</li>
+                            <li>✅Vilca Quispe Ronal Ever</li>
+                            <li>✅ Vizcarra Ylaquita Jenifer Stephanie</li>
+                        </ul>
+                        <p className="mt-4">¡Gracias por revisar nuestro trabajo!</p>
+                    </section>
+                    <footer className="modal-card-foot">
+                        <button className="button is-success" onClick={() => setShowModal(false)}>Cerrar</button>
+                    </footer>
+                </div>
+            </div>
         </>
     );
 }

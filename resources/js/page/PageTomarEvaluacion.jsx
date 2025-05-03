@@ -11,25 +11,21 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function PageTomarEvaluacion() {
     document.title = 'Tomar evaluación';
 
-    // Correctly get evaluacionEstudianteId from URL params
-    const { evaluacionEstudianteId } = useParams(); // <-- Make sure your route is /tomar-examen/:evaluacionEstudianteId
 
-
-
+    const { evaluacionEstudianteId } = useParams();
     const navigate = useNavigate();
 
-    const [evaluationAttempt, setEvaluationAttempt] = useState(null); // Holds the evaluaciones_estudiantes record
-    const [evaluation, setEvaluation] = useState(null); // Holds the basic evaluation template data
-    const [questions, setQuestions] = useState([]); // State specifically for the questions list
-    const [studentAnswers, setStudentAnswers] = useState({}); // State to store student's answers
-    const [timeRemaining, setTimeRemaining] = useState(0); // Time in seconds
+    const [evaluationAttempt, setEvaluationAttempt] = useState(null);
+    const [evaluation, setEvaluation] = useState(null);
+    const [questions, setQuestions] = useState([]);
+    const [studentAnswers, setStudentAnswers] = useState({});
+    const [timeRemaining, setTimeRemaining] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
-    const timerRef = useRef(null); // Ref to hold the interval ID
+    const timerRef = useRef(null);
 
-    // Fetch Evaluation Data
     useEffect(() => {
         const fetchEvaluationData = async () => {
             setIsLoading(true);
