@@ -211,7 +211,7 @@ export default function PageTomarEvaluacion() {
                 isAutoSubmit ? 'El tiempo se agotó. Tus respuestas han sido guardadas.' : '<h1 class="is-size-3">Tu puntaje es: '+response?.data?.totalScore+'</h1> Tus respuestas han sido enviadas.',
                 'success'
             ).then(() => {
-                navigate('/dashboard');
+                navigate('/');
             });
 
 
