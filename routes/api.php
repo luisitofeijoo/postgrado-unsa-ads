@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('user/listar', [\App\Http\Controllers\UserController::class, 'index'])->name('user.index');
     Route::post('curso/store', [\App\Http\Controllers\CursoController::class, 'store'])->name('curso.crear');
     Route::get('cursos', [\App\Http\Controllers\CursoController::class, 'index'])->name('curso.index');
+
     Route::get('curso/evaluaciones', [\App\Http\Controllers\CursoController::class, 'evaluaciones'])->name('curso.evaluaciones');
 
     Route::post('evaluaciones/{curso_id}', [\App\Http\Controllers\EvaluacionController::class, 'store']);
